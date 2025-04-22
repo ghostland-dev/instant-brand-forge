@@ -16,6 +16,18 @@ const BrandResult = ({ formData }: BrandResultProps) => {
   const brandData = generateBrandData(formData.businessName);
 
   const handleDownload = () => {
+    // Simuler un téléchargement
+    const data = JSON.stringify(brandData, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${brandData.name.toLowerCase()}-brand-kit.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
     toast({
       title: "Téléchargement prêt",
       description: "Tous les éléments de votre marque ont été téléchargés.",
@@ -77,6 +89,7 @@ const BrandResult = ({ formData }: BrandResultProps) => {
               Votre branding est maintenant prêt à être utilisé. Vous pouvez télécharger tous les éléments ou les copier individuellement.
             </p>
             <Button>
+              <Download className="mr-2 h-4 w-4" />
               Créer une nouvelle marque
             </Button>
           </div>
